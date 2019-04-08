@@ -2,29 +2,25 @@ with open('polymer.txt', 'r') as file:
     polymer = file.read()
 
 
-def react(poly):
-    for i in range(len(poly)-1):
-        cur = poly[i]
-        nex = poly[i+1]
-        if (cur.isupper() and nex.islower()) or (cur.islower() and nex.isupper()):
-            if cur.lower() == nex.lower():
-                reacted = poly[:i]
-                if i+1 < len(poly):
-                    reacted += poly[i+2:]
-                return reacted
-    return len(poly)
+def react(polymer):
+    chain = []
+    for unit in polymer:
+        if len(chain) < 1:
+            chain.append(unit)
+        else:
+            cur = chain[-1]
+            if ((cur.isupper() and unit.islower()) or (cur.islower() and unit.isupper())) and cur.lower() == unit.lower():
+                chain.pop(-1)
+            else:
+                chain.append(unit)
+
+    return len(chain)
 
 
-def getlength(poly):
-    while type(poly) == str:
-        poly = react(poly)
+print(react('aA'))
+print(react('abBA'))
+print(react('abAB'))
+print(react('aabAAB'))
+print(react('dabAcCaCBAcCcaDA'))
 
-    return poly
-
-print(getlength('aA'))
-print(getlength('abBA'))
-print(getlength('abAB'))
-print(getlength('aabAAB'))
-print(getlength('dabAcCaCBAcCcaDA'))
-
-print(getlength(polymer.strip()))
+print(react(polymer.strip()))
