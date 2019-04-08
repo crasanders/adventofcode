@@ -1,7 +1,7 @@
 with open('polymer.txt', 'r') as file:
-    polymer = file.read()
+    polymer = file.read().strip()
 
-
+#puzzle 1
 def react(polymer):
     chain = []
     for unit in polymer:
@@ -23,4 +23,21 @@ print(react('abAB'))
 print(react('aabAAB'))
 print(react('dabAcCaCBAcCcaDA'))
 
-print(react(polymer.strip()))
+print(react(polymer))
+
+
+#puzzle 2
+def whichunit(polymer):
+    bestunit = ''
+    lowest = len(polymer)
+    typs = ''.join(set(polymer.lower()))
+    for typ in typs:
+        reduced_polymer = polymer.replace(typ, '').replace(typ.upper(), '')
+        length = react(reduced_polymer)
+        if length < lowest:
+            bestunit = typ
+            lowest = length
+    return bestunit, lowest
+
+print(whichunit('dabAcCaCBAcCcaDA'))
+print(whichunit(polymer))
